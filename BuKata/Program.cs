@@ -18,6 +18,8 @@ namespace KataTasks
             Console.WriteLine(Kata.Rgb(-20, 255, 255));
 
             Console.WriteLine(Kata.PigIt("Hello world !"));
+
+            Console.WriteLine(Kata.UniqueInOrder("AAAABBBCCDAABBB"));
         }
 
 
@@ -170,6 +172,44 @@ namespace KataTasks
                 s = s.Substring(0, s.Length - 1);
                 return s;
             }
+
+            public static IEnumerable<T> UniqueInOrder<T>(IEnumerable<T> iterable)
+            {
+
+                List<T> list = new List<T>();
+
+                foreach (T element in iterable)
+                {
+                    if (!list.Contains(element))
+                        list.Add(element);
+                    else if (list.LastIndexOf(element) != list.Count - 1)
+                        list.Add(element);
+                }
+
+                return list;
+
+            }
+
+            public static IEnumerable<T> UniqueInOrder2<T>(IEnumerable<T> iterable)
+            {
+                T previous = default(T);
+                foreach (T current in iterable)
+                {
+                    if (!current.Equals(previous))
+                    {
+                        previous = current;
+                        yield return current;
+                    }
+                }
+            }
+
+            public static IEnumerable<T> UniqueInOrder3<T>(IEnumerable<T> iterable)
+            {
+                return iterable.Where((x, i) => i == 0 || !Equals(x, iterable.ElementAt(i - 1)));
+
+            }
+
+
         }
     }
 }
