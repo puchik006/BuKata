@@ -20,6 +20,8 @@ namespace KataTasks
             Console.WriteLine(Kata.PigIt("Hello world !"));
 
             Console.WriteLine(Kata.UniqueInOrder("AAAABBBCCDAABBB"));
+
+            Console.WriteLine(Kata.DeleteNth(new int[] { 3, 1, 2, 3, 2, 3, 3, 2, 2, 2 }, 1));
         }
 
 
@@ -209,7 +211,67 @@ namespace KataTasks
 
             }
 
+            public static int[] DeleteNth(int[] arr, int x)
+            {
+                List<int> list = arr.ToList();
 
+                for (int i = 0; i < list.Count; i++)
+                {
+                    int sameCount = 0;
+
+                    for (int j = 0; j < list.Count; j++)
+                    {
+
+                        if (list[i] == list[j])
+                        {
+                            sameCount++;
+
+                            if (sameCount > x)
+                            {
+                                list.RemoveAt(j);
+                            }
+                        }
+                    }
+ 
+                }
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    int sameCount = 0;
+
+                    for (int j = 0; j < list.Count; j++)
+                    {
+
+                        if (list[i] == list[j])
+                        {
+                            sameCount++;
+
+                            if (sameCount > x)
+                            {
+                                list.RemoveAt(j);
+                            }
+                        }
+                    }
+                }
+
+                return list.ToArray<int>();
+            }
+
+            public static int[] DeleteNth2(int[] arr, int x)
+            {
+                return arr.Where((t, i) => arr.Take(i + 1).Count(s => s == t) <= x).ToArray();
+            }
+
+            public static int[] DeleteNth3(int[] arr, int x)
+            {
+                var result = new List<int>();
+                foreach (var item in arr)
+                {
+                    if (result.Count(i => i == item) < x)
+                        result.Add(item);
+                }
+                return result.ToArray();
+            }
         }
     }
 }
