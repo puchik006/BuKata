@@ -9,19 +9,21 @@ namespace KataTasks
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Kata.CreatePhoneNumber(new int[] { 0, 8, 3, 4, 5, 6, 7, 8, 9, 0 }));
+            //Console.WriteLine(Kata.CreatePhoneNumber(new int[] { 0, 8, 3, 4, 5, 6, 7, 8, 9, 0 }));
 
-            Console.WriteLine(Kata.XO("asdaXXOO"));
+            //Console.WriteLine(Kata.XO("asdaXXOO"));
 
-            Console.WriteLine(Kata.Solution(10));
+            //Console.WriteLine(Kata.Solution(10));
 
-            Console.WriteLine(Kata.Rgb(-20, 255, 255));
+            //Console.WriteLine(Kata.Rgb(-20, 255, 255));
 
-            Console.WriteLine(Kata.PigIt("Hello world !"));
+            //Console.WriteLine(Kata.PigIt("Hello world !"));
 
-            Console.WriteLine(Kata.UniqueInOrder("AAAABBBCCDAABBB"));
+            //Console.WriteLine(Kata.UniqueInOrder("AAAABBBCCDAABBB"));
 
-            Console.WriteLine(Kata.DeleteNth(new int[] { 3, 1, 2, 3, 2, 3, 3, 2, 2, 2 }, 1));
+            //Console.WriteLine(Kata.DeleteNth(new int[] { 3, 1, 2, 3, 2, 3, 3, 2, 2, 2 }, 1));
+
+            Console.WriteLine(Kata.SinglePermutations("ab"));
         }
 
 
@@ -208,7 +210,6 @@ namespace KataTasks
             public static IEnumerable<T> UniqueInOrder3<T>(IEnumerable<T> iterable)
             {
                 return iterable.Where((x, i) => i == 0 || !Equals(x, iterable.ElementAt(i - 1)));
-
             }
 
             public static int[] DeleteNth(int[] arr, int x)
@@ -271,6 +272,79 @@ namespace KataTasks
                         result.Add(item);
                 }
                 return result.ToArray();
+            }
+
+            public static List<string> SinglePermutations(string s)
+            {
+
+                Random rnd = new Random();
+
+                List<string> list = new List<string>();
+
+                List<char> cs = s.ToList();
+
+                var query = cs.GroupBy(x => x)
+                               .Where(g => g.Count() > 1)
+                               .ToDictionary(x => x.Key, y => y.Count());
+
+                int combDev = 1;
+
+                foreach (var e in query)
+                {
+                    combDev = combDev * Factorial(e.Value);
+                }
+
+                int combination = Factorial(s.Length) / combDev;
+
+                while (list.Count < combination)
+                {
+                    string newString = "";
+
+                    int i = rnd.Next(0, cs.Count);
+
+                    int j = rnd.Next(0, cs.Count);
+
+                    (cs[i], cs[j]) = (cs[j], cs[i]);
+
+                    for (int k = 0; k < cs.Count; k++)
+                    {
+                        newString = newString + cs[k].ToString();
+                    }
+
+                    if (!list.Contains(newString))
+                    {
+                        list.Add(newString);
+                        Console.WriteLine(newString);
+                    }
+
+                }
+
+                Console.WriteLine("perm is " + list.Count.ToString());
+                return list;
+            }
+
+            public static List<string> SinglePermutations2(string s)
+            {
+                if (s.Length == 1) return new List<string> { s };
+
+                var perms = new List<string>();
+
+                foreach (char c in s)
+                {
+                    string others = s.Remove(s.IndexOf(c), 1);
+                    perms.AddRange(SinglePermutations2(others).Select(perm => c + perm));
+                }
+
+                return perms.Distinct().ToList();
+            }
+
+            public static int Factorial(int n)
+            {
+                if (n == 0) return 1;
+
+                if (n == 1) return 1;
+
+                return n * Factorial(n - 1);
             }
         }
     }
