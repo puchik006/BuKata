@@ -23,7 +23,9 @@ namespace KataTasks
 
             //Console.WriteLine(Kata.DeleteNth(new int[] { 3, 1, 2, 3, 2, 3, 3, 2, 2, 2 }, 1));
 
-            Console.WriteLine(Kata.SinglePermutations("ab"));
+            //Console.WriteLine(Kata.SinglePermutations("ab"));
+
+            Console.WriteLine(Kata.dirReduc(new string[] { "NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST", "WEST" }));
         }
 
 
@@ -233,7 +235,7 @@ namespace KataTasks
                             }
                         }
                     }
- 
+
                 }
 
                 for (int i = 0; i < list.Count; i++)
@@ -345,6 +347,78 @@ namespace KataTasks
                 if (n == 1) return 1;
 
                 return n * Factorial(n - 1);
+            }
+
+            public static string[] dirReduc(String[] arr)
+            {
+
+                List<string> list = arr.ToList();
+
+                list = NWES(list);
+
+                arr = list.ToArray();
+
+                foreach (var item in arr)
+                {
+                    Console.WriteLine(item.ToString());
+                }
+
+                return arr;
+
+            }
+
+            public static List<string> NWES(List<string> list)
+            {
+                if (list.Count == 1)
+                {
+                    return list;
+                }
+
+                for (int i = 0; i < list.Count - 1; i++)
+                {
+                    if (list.Count > 1 && i < list.Count - 1)
+                    {
+
+                        if (list[i] == "NORTH" && list[i + 1] == "SOUTH")
+                        {
+                            list.RemoveAt(i);
+                            list.RemoveAt(i);
+                            NWES(list);
+                        }
+                    }
+
+                    if (list.Count > 1 && i < list.Count - 1)
+                    {
+                        if (list[i] == "SOUTH" && list[i + 1] == "NORTH")
+                        {
+                            list.RemoveAt(i);
+                            list.RemoveAt(i);
+                            NWES(list);
+                        }
+                    }
+
+                    if (list.Count > 1 && i < list.Count - 1)
+                    {
+                        if (list[i] == "EAST" && list[i + 1] == "WEST")
+                        {
+                            list.RemoveAt(i);
+                            list.RemoveAt(i);
+                            NWES(list);
+                        }
+                    }
+                    if (list.Count > 1 && i < list.Count-1)
+                    {
+                        if (list[i] == "WEST" && list[i + 1] == "EAST")
+                        {
+                            list.RemoveAt(i);
+                            list.RemoveAt(i);
+                            NWES(list);
+                        }
+                    }
+                }
+                
+                
+                return list;
             }
         }
     }
