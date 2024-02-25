@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace KataTasks
 {
@@ -25,12 +26,94 @@ namespace KataTasks
 
             //Console.WriteLine(Kata.SinglePermutations("ab"));
 
-            Console.WriteLine(Kata.dirReduc(new string[] { "NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST", "WEST" }));
+            //Console.WriteLine(Kata.dirReduc(new string[] { "NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST", "WEST" }));
+
+            //int[] arr = Kata.MoveZeroes(new int[] { 1, 2, 1, 1, 3, 1, 0, 0, 0, 0 });
+
+            //foreach (var item in arr)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            Console.WriteLine(Kata.ToRoman(3955));
+
+            Console.WriteLine(Kata.FromRoman("V"));
+
+            Console.ReadLine();
         }
 
 
         public class Kata
         {
+
+            public static Dictionary<string,int> RomanNumbers = new Dictionary<string, int>() 
+            {
+                {"M",1000},
+                {"CM",900},
+                {"D",500},
+                {"CD",400},
+                {"C",100},
+                {"XC",90},
+                {"L",50},
+                {"XL",40},
+                {"X",10},
+                {"IX",9},
+                {"V",5},
+                {"IV",4},
+                {"I",1}
+            };
+
+            public static Dictionary<int, string> SwappedRomanNumbers = RomanNumbers.ToDictionary(x => x.Value, x => x.Key);
+
+            public static string ToRoman(int n)
+            {
+                string result = null;
+
+                int number = n;
+
+                void recurs (int recur)
+                {   
+                    if (recur == 0) return;
+
+                    foreach (var roman in RomanNumbers.Values)
+                    {
+                        if (recur / roman > 0)
+                        {
+                            for (int i = 0; i < recur / roman; i++)
+                            {
+                                result += SwappedRomanNumbers[roman];
+                            }
+
+                            recur = recur % roman;
+
+                            if (recur > 0)
+                            {
+                                recurs(recur);
+                            }
+                            else
+                            {
+                                return;
+                            }     
+                        }
+                    }
+                }
+
+                recurs(number);
+
+                return result;
+            }
+
+            public static int FromRoman(string romanNumeral)
+            {
+                return 0;
+            }
+
+
+            public static int[] MoveZeroes(int[] arr)
+            {
+                return arr.OrderBy(x => x == 0).ToArray();
+            }
+
             public static string CreatePhoneNumber(int[] numbers)
             {
 
